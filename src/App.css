@@ -1,32 +1,28 @@
-.App {
-  text-align: center;
+.btn-primary {
+    background-color: hsl(161, 42%, 52%);
+    border-color: hsl(161, 42%, 52%);
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+.btn-primary.disabled, .btn-primary:disabled {
+    color: #959595 !important;
+    background-color: #e4e4e4 !important;
+    border-color: #e4e4e4 !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.btn-primary:hover {
+    background-color: hsl(161, 42%, 42%);
+    border-color: hsl(161, 42%, 42%);
 }
 
-.App-link {
-  color: #61dafb;
+a {
+    color: hsl(161, 42%, 52%);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+a:hover {
+    color: hsl(161, 42%, 42%);
+}
+
+/* Remove first line */
+.table.noHeaderLine > tbody > tr:first-child > td {
+    border: none;
 }
