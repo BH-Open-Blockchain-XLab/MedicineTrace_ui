@@ -22,14 +22,14 @@ class SplitProduct extends Component {
   // TODO: before actually updating the product, check if there is a newer version (i.e. someone else updated the product before us)
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       latitude: '',
       longitude: '',
       buttonDisabled: false,
       address: '',
       customDataInputs: {}
-    }
+    };
     this.onChange = (address) => this.setState({ address })
   }
 

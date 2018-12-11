@@ -35,7 +35,7 @@ class App extends Component {
                 <Navbar color="faded" light
                         style={{paddingTop: "1em", paddingBottom: "2em", backgroundColor: bodyColor}} expand="md">
                     <Container>
-                        <Link to='/'><img alt="Logo Trace" style={{width: "260px", marginRight: "20px"}}
+                        <Link to='/'><img alt="Logo Trace" style={{width: "130px", marginRight: "20px"}}
                                           src={require("./pic/logo-black.svg")} /></Link>
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>

@@ -20,31 +20,6 @@ class MyProducts extends Component {
         };
     }
 
-    /*    componentDidMount() {
-            this.props.passageInstance.getOwnerProducts({from: this.props.web3Accounts[0]})
-                .then((result) => {
-                    result.map((productId) => {
-                        this.props.passageInstance.getProductById(String(productId).valueOf(), "latest")
-                            .then((result) => {
-                                const product = {
-                                    name: result[0],
-                                    description: result[1],
-                                    latitude: parseFloat(result[2]),
-                                    longitude: parseFloat(result[3]),
-                                    versionCreationDate: Date(result[4]),
-                                    versions: result[5],
-                                    id: productId,
-                                };
-                                this.setState({products: [...this.state.products, product]})
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                            });
-                        return false;
-                    })
-                });
-        }*/
-
     render() {
         const products = this.state.products.map((product, index) => {
             return (
@@ -101,7 +76,7 @@ class MyProducts extends Component {
                     panelContent={
                         <div>
                             <div>
-                                <Link style={{marginLeft: "10px"}} to="/">List mode</Link>
+                                <Link style={{marginLeft: "10px"}} to="/products/view">List mode</Link>
                             </div>
                             <div>
                                 <Link style={{marginLeft: "10px"}} to="/">QR scan mode</Link>
@@ -114,14 +89,10 @@ class MyProducts extends Component {
     }
 }
 
-// function mapStateToProps(state) {
-//     return {
-//         passageInstance: state.reducer.passageInstance,
-//         productIdToView: state.reducer.productIdToView,
-//         web3Accounts: state.reducer.web3Accounts
-//     };
-// }
-//
-// export default connect(mapStateToProps)(MyProducts);
+function mapStateToProps(state) {
+    return {
+        productIdToView : state.reducer.productIdToView
+    };
+}
 
-export default MyProducts;
+export default connect(mapStateToProps)(MyProducts);

@@ -17,9 +17,6 @@ class Account extends Component {
             availableCertifications: ''
         };
 
-        // props.web3.eth.getBalance(props.web3Accounts[0], function (err, result) {
-        //     document.getElementById("EtherBalance").innerHTML = props.web3.fromWei(result, 'ether');
-        // });
     }
 
     /*componentDidMount() {
