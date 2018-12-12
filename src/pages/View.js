@@ -85,7 +85,7 @@ class View extends Component {
                         </div>
                     }
                     panelContent={
-                        <div>
+                        <div style={{marginLeft: "10px"}}>
                             {this.state.ProductID==="" ? <div /> :
                                 <QRCode value={this.state.ProductID}/>}
                             <div>

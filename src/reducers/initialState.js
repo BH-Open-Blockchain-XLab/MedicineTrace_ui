@@ -1,4 +1,4 @@
 export default {
     productIdToView: "",
-    searchHistory: []
+    searchHistory: ["abc"]
 };

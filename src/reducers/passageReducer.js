@@ -3,11 +3,11 @@ import initialState from './initialState';
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case 'PUTINID':
-            return { productIdToView : action.productId };
+            return {...state, productIdToView : action.productId };
         case 'UPDATEHISTORY':
-            return { searchHistory : state.searchHistory.push(action.searchId)};
+            return {...state, searchHistory: [...state.searchHistory, action.searchId]};
         case 'CLEARHISTORY':
-            return { searchHistory: []};
+            return {...state, searchHistory: []};
         default:
             return state;
     }

@@ -22,16 +22,19 @@ class MyProducts extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
-            products: [],
+            histories: [],
             haveCompany: false,
             companyInfo: ""
         };
+
+        this.clearSearchHistory = this.clearSearchHistory.bind(this);
     }
 
     componentDidMount() {
         this.fetchProduct();
+        this.setSearchHistory();
+        console.log(this.props);
     }
 
     fetchProduct() {
@@ -50,20 +53,26 @@ class MyProducts extends Component {
 
     clearSearchHistory() {
         this.props.dispatch(MainAction.ClearHistory());
+        this.setState({histories: []});
     }
 
     updateHistory(id) {
         this.props.dispatch(MainAction.UpdateHistory(id));
-        console.log(this.props.searchHistory);
     };
 
+    setSearchHistory() {
+        this.props.searchHistory.length > 0 ?
+            this.setState({histories: [...this.props.searchHistory]})
+            :
+            this.setState({histories: []});
+    }
+
     render() {
-        const products = this.state.products.map((product, index) => {
+        const histories = this.state.histories.map((history, index) => {
             return (
-                <Link key={index} to={`/products/${product.id}`}>
-                    <div key={index}>
-                        <b>{product.name || "Untitled product"}</b> &mdash; {product.description || "No description"}
-                        <hr/>
+                <Link key={index} to={`/products/${history}`} >
+                    <div key={index} style={{marginLeft: "10px"}}>
+                        {history || "Untitled product"}
                     </div>
                 </Link>
             )
@@ -117,7 +126,6 @@ class MyProducts extends Component {
                         <div>
                             <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}} icon={faList}/>
                             My information
-                            {/*<Link style={{marginLeft: "10px"}} to="/create">Create +</Link>*/}
                         </div>
                     }
                     panelContent={
@@ -138,7 +146,13 @@ class MyProducts extends Component {
 
                     panelContent={
                         <div>
-                            {products && products.length > 0 ? products :
+                            {histories && histories.length > 0 ?
+                                <div>
+                                    {histories}
+                                    <hr/>
+                                    <Button color="link" size="sm" style={{color: "hsl(161, 42%, 52%)"}}onClick={this.clearSearchHistory}><b>Clear History</b></Button>
+                                </div>
+                                :
                                 <div>
                                     You did not search any products yet.
                                 </div>}
@@ -157,7 +171,7 @@ class MyProducts extends Component {
                     }
                     panelContent={
                         <div>
-                            <Link style={{marginLeft: "10px"}} to={"/create"}>
+                            <Link to={"/create"}>
                                 <Button color="primary" title="">
                                     Create a product
                                 </Button>
