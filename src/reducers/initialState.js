@@ -1,3 +1,4 @@
 export default {
-    productIdToView: ""
+    productIdToView: "",
+    searchHistory: []
 };

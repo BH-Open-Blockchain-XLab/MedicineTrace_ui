@@ -5,8 +5,15 @@ export function PutInId(id) {
     };
 }
 
-export function ClearId() {
+export function UpdateHistory(id) {
     return {
-        type: 'CLEARID'
+        type: 'UPDATEHISTORY',
+        searchId: id
+    };
+}
+
+export function ClearHistory() {
+    return {
+        type: 'CLEARHISTORY'
     };
 }

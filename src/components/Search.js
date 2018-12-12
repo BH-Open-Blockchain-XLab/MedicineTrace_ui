@@ -10,6 +10,7 @@ import {
     Button
 } from 'reactstrap';
 
+
 class Search extends Component {
 
     constructor(props) {
@@ -31,7 +32,8 @@ class Search extends Component {
                         <InputGroupAddon addonType="append">
                             <Link to={"/products/" + this.state.productIdToView}><Button
                                 style={{borderBottomLeftRadius: "0", borderTopLeftRadius: "0"}}
-                                color="primary">Search</Button></Link>
+                                color="primary"
+                                onClick={() => this.props.updateSearchId(this.state.productIdToView)}>Search</Button></Link>
                         </InputGroupAddon>
                     </InputGroup>
                 </FormGroup>
@@ -40,4 +42,6 @@ class Search extends Component {
     }
 }
 
+
 export default Search;
+

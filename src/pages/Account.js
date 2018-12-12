@@ -16,30 +16,7 @@ class Account extends Component {
             isGod: false,
             availableCertifications: ''
         };
-
     }
-
-    /*componentDidMount() {
-        this.props.passageInstance.isUserGod({from: this.props.web3Accounts[0]})
-            .then((result) => {
-                this.setState({isGod: result});
-            });
-
-        this.props.passageInstance.getActorCertificationsIds({from: this.props.web3Accounts[0]})
-            .then((result) => {
-                result.map((certificationId) => {
-                    return this.props.passageInstance.getCertificationById(String(certificationId).valueOf())
-                        .then((result) => {
-                            const certification = {
-                                name: result[0],
-                                imageUrl: result[1],
-                                id: certificationId,
-                            }
-                            return this.setState({availableCertifications: [...this.state.availableCertifications, certification]})
-                        });
-                });
-            })
-    }*/
 
     render() {
         return (

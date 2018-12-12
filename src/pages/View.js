@@ -7,9 +7,9 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import faInfoCircle from '@fortawesome/fontawesome-free-solid/faInfoCircle'
 import faThumbtack from '@fortawesome/fontawesome-free-solid/faThumbtack'
 import faWrench from '@fortawesome/fontawesome-free-solid/faWrench'
-import faHistory from '@fortawesome/fontawesome-free-solid/faHistory'
 
 import AnnotatedSection from '../components/AnnotatedSection'
+import * as MainAction from '../reducers/mainActions'
 
 import {
     Button,
@@ -28,6 +28,7 @@ class View extends Component {
 
         // product information definition921749847498328473298477428921//无故障发生，巡视员编号
         this.state = {
+            haveRightId: false,
             dataSource: null,
             ProductID: "",
             fProduction: "",
@@ -44,6 +45,7 @@ class View extends Component {
 
     componentDidMount() {
         this.fetchProduct();
+        this.props.dispatch(MainAction.PutInId(this.props.match.params.productId));
     }
 
     fetchProduct() {
@@ -51,6 +53,7 @@ class View extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
+                    haveRightId: true,
                     dataSource: responseJson,
                     ProductID: responseJson.ProductID,
                     fProduction: responseJson.fProduction,
@@ -66,13 +69,12 @@ class View extends Component {
             .catch((error) => {
                 console.error(error);
             })
-
     }
 
     render() {
         const customData = this.state.customDataJson ? JSON.parse(this.state.customDataJson) : {};
 
-        return (
+        const viewPage = (
             <div>
                 <AnnotatedSection
                     annotationContent={
@@ -86,8 +88,6 @@ class View extends Component {
                         <div>
                             {this.state.ProductID==="" ? <div /> :
                                 <QRCode value={this.state.ProductID}/>}
-
-
                             <div>
                                 Unique product identifier
                                 <pre>{this.state.ProductID}</pre>
@@ -429,7 +429,7 @@ class View extends Component {
                                 </Button>
                             </Link>
                             <Link style={{marginLeft: "10px"}}
-                                  to={"/products/view"}>
+                                  to={"/products/" + this.state.productID}>
                                 <Button color="warning">
                                     See more details
                                 </Button>
@@ -437,9 +437,23 @@ class View extends Component {
                         </div>
                     }
                 />
-
             </div>
         );
+        const waiting = (
+            <div style={{
+                textAlign: "center",
+                padding: "1em"
+            }}>
+                Loading...
+            </div>
+        );
+
+        return (
+            <div>
+                {this.state.haveRightId ? viewPage : waiting}
+            </div>
+        );
+
     }
 }
 
