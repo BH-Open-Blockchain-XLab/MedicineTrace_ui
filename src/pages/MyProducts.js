@@ -150,7 +150,7 @@ class MyProducts extends Component {
                                 <div>
                                     {histories}
                                     <hr/>
-                                    <Button color="link" size="sm" style={{color: "hsl(161, 42%, 52%)"}}onClick={this.clearSearchHistory}><b>Clear History</b></Button>
+                                    <Button color="link" size="sm" style={{color: "hsl(161, 42%, 42%)"}}onClick={this.clearSearchHistory}><b>Clear History</b></Button>
                                 </div>
                                 :
                                 <div>
