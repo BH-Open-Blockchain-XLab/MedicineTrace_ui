@@ -26,7 +26,7 @@ class Search extends Component {
                 <FormGroup>
                     <Label>Product identifier</Label>
                     <InputGroup>
-                        <Input placeholder="Product id ..." value={this.state.productIdToView} onChange={(e) => {
+                        <Input placeholder="0x..." value={this.state.productIdToView} onChange={(e) => {
                             this.setState({productIdToView: e.target.value})
                         }}/>
                         <InputGroupAddon addonType="append">

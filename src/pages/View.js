@@ -13,7 +13,8 @@ import * as MainAction from '../reducers/mainActions'
 
 import {
     Button,
-    Table
+    Table,
+    Row
 } from 'reactstrap';
 
 /*
@@ -85,14 +86,14 @@ class View extends Component {
                         </div>
                     }
                     panelContent={
-                        <div style={{marginLeft: "10px"}}>
+                        <Row style={{marginLeft: "10px"}}>
                             {this.state.ProductID==="" ? <div /> :
-                                <QRCode value={this.state.ProductID}/>}
+                                <QRCode style={{marginRight: "50px"}} value={this.state.ProductID}/>}
                             <div>
                                 Unique product identifier
                                 <pre>{this.state.ProductID}</pre>
                             </div>
-                        </div>
+                        </Row>
                     }
                 />
 
@@ -423,7 +424,7 @@ class View extends Component {
                     }
                     panelContent={
                         <div>
-                            <Link style={{marginLeft: "10px"}} to={"/products/view"}>
+                            <Link style={{marginLeft: "10px"}} to={"/products/"+ this.state.ProductID +"/update"}>
                                 <Button color="success">
                                     Update product
                                 </Button>

@@ -34,7 +34,6 @@ class MyProducts extends Component {
     componentDidMount() {
         this.fetchProduct();
         this.setSearchHistory();
-        console.log(this.props);
     }
 
     fetchProduct() {
@@ -179,7 +178,6 @@ class MyProducts extends Component {
                         </div>
                     }
                 />
-
             </div>
         );
     }
