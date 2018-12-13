@@ -1,3 +1,5 @@
+This project was forked from [trace](https://github.com/maximevaillancourt/trace).
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
