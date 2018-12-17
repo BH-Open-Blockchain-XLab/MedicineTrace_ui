@@ -12,40 +12,73 @@
     "Name": "999牌感冒灵",
     "Detail": "西药，非处方药"
   },
-  "fPhaFactory": {
-    "Name": "山东鲁能第一制药有限公司",
-    "ProLicense": "450102200023278",
-    "ProApprovalNum": "48893989128",
-    "Detail": "山东省济南市历下区经十路27,号,建成于2010年"
-  },
   "fInspection": {
+    "state": "Great",
     "InspectionID": "20181210AE76",
     "InspectionTime": "20181210-08-33-27",
     "InspectionResult": "合格100%",
     "InspectionDetail": "药品质量严打周"
   },
-  "fEnDepotMsg": {
-    "InChargeID": "E56",
-    "Batch": "20181210E573",
-    "FromLink": "0",
-    "Detail": "20181211-09-43-12,非处方药,999牌感冒灵,本批次共装箱80,总3200盒"
-  },
-  "fExDepotMsg": {
-    "InChargeID": "E02",
-    "Batch": "20190124S820",
-    "Detail": "20190124-13-08-09,非处方药,999牌感冒灵,本批次共装箱53,总2120盒"
-  },
-  "fDepot": {
-    "ID": "37242608119",
-    "Name": "济南历下38号仓114间",
-    "Detail": "山东省济南市历下区牡丹街117号"
-  },
-  "fSale": {
-    "InChargeID": "W12",
-    "Batch": "20190228C17A2",
-    "Time": "2019-02-28-10-33-12",
-    "License": "4501070944329524",
-    "Detail": "山东省济南市省立医院西药2号药房1号窗口01号售"
-  }
-
+  "fPhaFactory": [
+    {
+      "state": "生产公司",
+      "Name": "山东鲁能第一制药有限公司",
+      "ProLicense": "450102200023278",
+      "ProApprovalNum": "48893989128",
+      "Detail": "山东省济南市历下区经十路27号,建成于2010年",
+      "fEnDepotMsg": {
+        "InChargeID": "E56",
+        "Batch": "20181210E573",
+        "Time": "2019-02-28-10-33-12",
+        "FromLink": "0",
+        "Detail": "非处方药,999牌感冒灵,本批次共装箱80,总3200盒"
+      },
+      "fExDepotMsg": {
+        "InChargeID": "E02",
+        "Batch": "20190124S820",
+        "Time": "2019-02-28-10-33-12",
+        "Detail": "非处方药,999牌感冒灵,本批次共装箱53,总2120盒"
+      }
+    },
+    {
+      "state": "中转公司",
+      "Name": "山东鲁能第二制药有限公司",
+      "ProLicense": "450102200023278",
+      "ProApprovalNum": "48893989128",
+      "Detail": "山东省济南市历下区经十路28号,建成于2011年",
+      "fEnDepotMsg": {
+        "InChargeID": "E56",
+        "Batch": "20181210E573",
+        "Time": "2019-02-28-10-33-12",
+        "FromLink": "0",
+        "Detail": "非处方药,999牌感冒灵,本批次共装箱80,总3200盒"
+      },
+      "fExDepotMsg": {
+        "InChargeID": "E02",
+        "Batch": "20190124S820",
+        "Time": "2019-02-28-10-33-12",
+        "Detail": "非处方药,999牌感冒灵,本批次共装箱53,总2120盒"
+      }
+    },
+    {
+      "state": "销售公司",
+      "Name": "山东鲁能同仁堂大药房",
+      "ProLicense": "450102200023278",
+      "ProApprovalNum": "48893989128",
+      "Detail": "山东省济南市历下区经十路29号,建成于2012年",
+      "fEnDepotMsg": {
+        "InChargeID": "E56",
+        "Batch": "20181210E573",
+        "Time": "2019-02-28-10-33-12",
+        "FromLink": "0",
+        "Detail": "非处方药,999牌感冒灵,本批次共装箱80,总3200盒"
+      },
+      "fExDepotMsg": {
+        "InChargeID": "W32",
+        "Batch": "20190124S820",
+        "Time": "2019-02-28-10-33-12",
+        "Detail": "山东省济南市省立医院西药2号药房1号窗口01号售"
+      }
+    }
+  ]
 }

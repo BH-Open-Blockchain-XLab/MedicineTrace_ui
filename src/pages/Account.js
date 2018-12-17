@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux';
 
 import AnnotatedSection from '../components/AnnotatedSection'
-import UpdateGodUser from '../components/UpdateGodUser';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import faUser from '@fortawesome/fontawesome-free-solid/faUser'
 import faCertificate from '@fortawesome/fontawesome-free-solid/faCertificate'
@@ -78,9 +77,6 @@ class Account extends Component {
                         </div>
                     }
                 />
-                {this.state.isGod &&
-                <UpdateGodUser/>
-                }
             </div>
         );
     }

@@ -34,6 +34,10 @@ class MyProducts extends Component {
     componentDidMount() {
         this.fetchProduct();
         this.setSearchHistory();
+        if (this.state.haveCompany === true)
+        {
+            this.props.dispatch(MainAction.SetFactoryInfo(this.state.companyInfo));
+        }
     }
 
     fetchProduct() {
@@ -186,7 +190,8 @@ class MyProducts extends Component {
 function mapStateToProps(state) {
     return {
         productIdToView: state.reducer.productIdToView,
-        searchHistory: state.reducer.searchHistory
+        searchHistory: state.reducer.searchHistory,
+        accountInformation: state.reducer.accountInformation
     };
 }
 

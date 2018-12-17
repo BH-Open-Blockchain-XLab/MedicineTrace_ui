@@ -17,3 +17,10 @@ export function ClearHistory() {
         type: 'CLEARHISTORY'
     };
 }
+
+export function SetFactoryInfo(info) {
+    return {
+        type: 'SETFACTORYINFO',
+        factoryinfo: info
+    };
+}

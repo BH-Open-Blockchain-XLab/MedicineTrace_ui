@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {connect} from 'react-redux';//通讯班，传递state
-import QRCode from 'qrcode.react'//生成二维码
-import {Link} from 'react-router-dom'//跳转路由
+import {connect} from 'react-redux';
+import QRCode from 'qrcode.react'
+import {Link} from 'react-router-dom'
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import faInfoCircle from '@fortawesome/fontawesome-free-solid/faInfoCircle'
@@ -34,12 +34,8 @@ class View extends Component {
             ProductID: "",
             fProduction: "",
             fDrug: "",
-            fPhaFactory: "",
+            fPhaFactory: [],
             fInspection: "",
-            fEnDepotMsg: "",
-            fExDepotMsg: "",
-            fDepot: "",
-            fSale: ""
         };
     };
 
@@ -60,11 +56,7 @@ class View extends Component {
                     fProduction: responseJson.fProduction,
                     fDrug: responseJson.fDrug,
                     fPhaFactory: responseJson.fPhaFactory,
-                    fInspection: responseJson.fInspection,
-                    fEnDepotMsg: responseJson.fEnDepotMsg,
-                    fExDepotMsg: responseJson.fExDepotMsg,
-                    fDepot: responseJson.fDepot,
-                    fSale: responseJson.fSale
+                    fInspection: responseJson.fInspection
                 })
             })
             .catch((error) => {
@@ -74,6 +66,43 @@ class View extends Component {
 
     render() {
         const customData = this.state.customDataJson ? JSON.parse(this.state.customDataJson) : {};
+
+        const factories = this.state.fPhaFactory.map((factory,index) => {
+            return (
+                <AnnotatedSection key={index}
+                    annotationContent={
+                        <div>
+                            <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
+                                             icon={faInfoCircle}/>
+                            {factory.state}
+                        </div>
+                    }
+                    panelContent={
+                        <Table>
+                            <tbody>
+                            <tr>
+                                <th scope="row">Name</th>
+                                <td><Link to="/">{factory.Name}</Link></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">ProLicense</th>
+                                <td>{factory.ProLicense}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">ProApprovalNum</th>
+                                <td>{factory.ProApprovalNum}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Detail</th>
+                                <td>{factory.Detail}</td>
+                            </tr>
+                            </tbody>
+                        </Table>
+                    }
+                />
+            )
+        });
+
 
         const viewPage = (
             <div>
@@ -125,14 +154,6 @@ class View extends Component {
                                 <th scope="row">Detail</th>
                                 <td>{this.state.fProduction.Detail}</td>
                             </tr>
-                            {
-                                Object.keys(customData).map(key =>
-                                    <tr key={key}>
-                                        <th scope="row">{key}</th>
-                                        <td>{customData[key]}</td>
-                                    </tr>
-                                )
-                            }
                             </tbody>
                         </Table>
                     }
@@ -165,58 +186,11 @@ class View extends Component {
                                 <th scope="row">Detail</th>
                                 <td>{this.state.fDrug.Detail}</td>
                             </tr>
-                            {
-                                Object.keys(customData).map(key =>
-                                    <tr key={key}>
-                                        <th scope="row">{key}</th>
-                                        <td>{customData[key]}</td>
-                                    </tr>
-                                )
-                            }
                             </tbody>
                         </Table>
                     }
                 />
-                {/* 药厂信息*/}
-                <AnnotatedSection
-                    annotationContent={
-                        <div>
-                            <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
-                                             icon={faInfoCircle}/>
-                            药厂信息
-                        </div>
-                    }
-                    panelContent={
-                        <Table>
-                            <tbody>
-                            <tr>
-                                <th scope="row">Name</th>
-                                <td><Link to="/">{this.state.fPhaFactory.Name}</Link></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">ProLicense</th>
-                                <td>{this.state.fPhaFactory.ProLicense}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">ProApprovalNum</th>
-                                <td>{this.state.fPhaFactory.ProApprovalNum}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Detail</th>
-                                <td>{this.state.fPhaFactory.Detail}</td>
-                            </tr>
-                            {
-                                Object.keys(customData).map(key =>
-                                    <tr key={key}>
-                                        <th scope="row">{key}</th>
-                                        <td>{customData[key]}</td>
-                                    </tr>
-                                )
-                            }
-                            </tbody>
-                        </Table>
-                    }
-                />
+
                 {/* 质检信息*/}
                 <AnnotatedSection
                     annotationContent={
@@ -257,162 +231,12 @@ class View extends Component {
                         </Table>
                     }
                 />
-                {/* 入库信息*/}
-                <AnnotatedSection
-                    annotationContent={
-                        <div>
-                            <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
-                                             icon={faInfoCircle}/>
-                            入库信息
-                        </div>
-                    }
-                    panelContent={
-                        <Table>
-                            <tbody>
-                            <tr>
-                                <th scope="row">InChargeID</th>
-                                <td>{this.state.fEnDepotMsg.InChargeID}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Batch</th>
-                                <td>{this.state.fEnDepotMsg.Batch}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">FromLink</th>
-                                <td>{this.state.fEnDepotMsg.FromLink}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Detail</th>
-                                <td>{this.state.fEnDepotMsg.Detail}</td>
-                            </tr>
-                            {
-                                Object.keys(customData).map(key =>
-                                    <tr key={key}>
-                                        <th scope="row">{key}</th>
-                                        <td>{customData[key]}</td>
-                                    </tr>
-                                )
-                            }
-                            </tbody>
-                        </Table>
-                    }
-                />
-                {/* 出库信息*/}
-                <AnnotatedSection
-                    annotationContent={
-                        <div>
-                            <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
-                                             icon={faInfoCircle}/>
-                            出库信息
-                        </div>
-                    }
-                    panelContent={
-                        <Table>
-                            <tbody>
-                            <tr>
-                                <th scope="row">InChargeID</th>
-                                <td>{this.state.fExDepotMsg.InChargeID}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Batch</th>
-                                <td>{this.state.fExDepotMsg.Batch}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Detail</th>
-                                <td>{this.state.fExDepotMsg.Detail}</td>
-                            </tr>
-                            {
-                                Object.keys(customData).map(key =>
-                                    <tr key={key}>
-                                        <th scope="row">{key}</th>
-                                        <td>{customData[key]}</td>
-                                    </tr>
-                                )
-                            }
-                            </tbody>
-                        </Table>
-                    }
-                />
-                {/* 仓库信息*/}
-                <AnnotatedSection
-                    annotationContent={
-                        <div>
-                            <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
-                                             icon={faInfoCircle}/>
-                            仓库信息
-                        </div>
-                    }
-                    panelContent={
-                        <Table>
-                            <tbody>
-                            <tr>
-                                <th scope="row">ID</th>
-                                <td>{this.state.fDepot.ID}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Name</th>
-                                <td>{this.state.fDepot.Name}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Detail</th>
-                                <td>{this.state.fDepot.Detail}</td>
-                            </tr>
-                            {
-                                Object.keys(customData).map(key =>
-                                    <tr key={key}>
-                                        <th scope="row">{key}</th>
-                                        <td>{customData[key]}</td>
-                                    </tr>
-                                )
-                            }
-                            </tbody>
-                        </Table>
-                    }
-                />
-                {/* 销售信息*/}
-                <AnnotatedSection
-                    annotationContent={
-                        <div>
-                            <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
-                                             icon={faInfoCircle}/>
-                            销售信息
-                        </div>
-                    }
-                    panelContent={
-                        <Table>
-                            <tbody>
-                            <tr>
-                                <th scope="row">InChargeID</th>
-                                <td>{this.state.fSale.InChargeID}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Batch</th>
-                                <td>{this.state.fSale.Batch}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Time</th>
-                                <td>{this.state.fSale.Time}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">License</th>
-                                <td>{this.state.fSale.License}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Detail</th>
-                                <td>{this.state.fSale.Detail}</td>
-                            </tr>
-                            {
-                                Object.keys(customData).map(key =>
-                                    <tr key={key}>
-                                        <th scope="row">{key}</th>
-                                        <td>{customData[key]}</td>
-                                    </tr>
-                                )
-                            }
-                            </tbody>
-                        </Table>
-                    }
-                />
+                {factories && factories.length>0 ?
+                    <div>
+                        {factories}
+                    </div>:
+                    {}
+                }
 
                 <AnnotatedSection
                     annotationContent={
