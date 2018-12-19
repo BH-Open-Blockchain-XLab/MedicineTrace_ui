@@ -254,7 +254,7 @@ class View extends Component {
                                 </Button>
                             </Link>
                             <Link style={{marginLeft: "10px"}}
-                                  to={"/products/" + this.state.productID}>
+                                  to={"/products/" + this.state.ProductID}>
                                 <Button color="warning">
                                     See more details
                                 </Button>

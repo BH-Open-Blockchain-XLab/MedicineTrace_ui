@@ -9,7 +9,7 @@ import faHistory from '@fortawesome/fontawesome-free-solid/faHistory'
 import faWrench from "@fortawesome/fontawesome-free-solid/faWrench"
 
 import AnnotatedSection from '../components/AnnotatedSection'
-import Search from '../components/Search';
+import Search from '../components/Search'
 
 import {
     Button,
@@ -34,10 +34,6 @@ class MyProducts extends Component {
     componentDidMount() {
         this.fetchProduct();
         this.setSearchHistory();
-        if (this.state.haveCompany === true)
-        {
-            this.props.dispatch(MainAction.SetFactoryInfo(this.state.companyInfo));
-        }
     }
 
     fetchProduct() {
@@ -47,7 +43,8 @@ class MyProducts extends Component {
                 this.setState({
                     haveCompany: true,
                     companyInfo: responseJson
-                })
+                });
+                this.updateCompanyInfo();
             })
             .catch((error) => {
                 console.error(error);
@@ -68,6 +65,10 @@ class MyProducts extends Component {
             this.setState({histories: [...this.props.searchHistory]})
             :
             this.setState({histories: []});
+    }
+
+    updateCompanyInfo() {
+        this.props.dispatch(MainAction.SetFactoryInfo(this.state.companyInfo));
     }
 
     render() {

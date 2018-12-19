@@ -1,56 +1,110 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux';
-import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete'
 import {Link} from 'react-router-dom'
 
 import AnnotatedSection from '../components/AnnotatedSection'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import faArrowAltCircleUp from '@fortawesome/fontawesome-free-solid/faArrowAltCircleUp'
+import faList from "@fortawesome/fontawesome-free-solid/faList";
 
 import {
     Button,
     FormGroup,
     Label,
     Input,
+    Table,
+    Progress,
 } from 'reactstrap';
 
-/*
-  Update component
-  @description Page component used to update a product's information.
-*/
 class Update extends Component {
-
-    // TODO: get the product details to make sure we have the right information before showing the Update page
-    // TODO: before actually updating the product, check if there is a newer version (i.e. someone else updated the product before us)
     constructor(props) {
         super(props);
-
         this.state = {
-            latitude: '',
-            longitude: '',
-            address: '',
-            updateButtonDisabled: false,
-            customDataInputs: {}
+            updateButtonDisabled: true,
+            companyInfo: '',
+            name: '',
+            date: new Date().toLocaleDateString(),
+            description: '',
+            progress: 0
         };
-
-        this.onChange = (address) => this.setState({address})
     }
 
     componentDidMount() {
         // shorthand to get the route parameters
         this.params = this.props.match.params;
-        console.log(this.props.accountInformation);
+        this.setState({
+            companyInfo: this.props.accountInformation,
+            updateButtonDisabled: (this.props.accountInformation === ''),
+            date: Update.setDate()
+        });
+
+
     }
 
-    render() {
-        const inputProps = {
-            value: this.state.address,
-            onChange: this.onChange,
-            placeholder: "Location (exact address, latitude & longitude, business)"
+    static setDate() {
+        let date = new Date();
+        let nowMonth = date.getMonth() + 1;
+        let strDate = date.getDate();
+
+        if (nowMonth >= 1 && nowMonth <= 9) {
+            nowMonth = "0" + nowMonth;
         }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+
+        return date.getFullYear() + "-" + nowMonth + "-" + strDate;
+    }
+
+    handleUpdateProduct = () => {
+        this.props.history.replace('/products/' + this.params.productId);
+    };
+
+
+    render() {
+        const companyTable = (
+            <div>
+                <Table>
+                    <tbody>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>{this.state.companyInfo.Name}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">LicenseNum</th>
+                        <td>{this.state.companyInfo.ProLicense}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ApprovalNum</th>
+                        <td>{this.state.companyInfo.ProApprovalNum}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Detail</th>
+                        <td>{this.state.companyInfo.Detail}</td>
+                    </tr>
+                    </tbody>
+                </Table>
+            </div>
+        );
 
         return (
             <div>
+                <AnnotatedSection
+                    annotationContent={
+                        <div>
+                            <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}} icon={faList}/>
+                            My company
+                        </div>
+                    }
+                    panelContent={
+                        this.state.companyInfo ? companyTable :
+                            <div>
+                                Fail to load your info. Please back to {" "}
+                                <Link to={"/"}>the main page</Link>
+                                .
+                            </div>
+                    }
+                />
                 <AnnotatedSection
                     annotationContent={
                         <div>
@@ -61,6 +115,7 @@ class Update extends Component {
                     }
                     panelContent={
                         <div>
+                            <Progress animated color="info" value={this.state.progress} />
                             <FormGroup>
                                 <Label>Name</Label>
                                 <Input placeholder="Product name" value={this.state.name} onChange={(e) => {
@@ -75,14 +130,15 @@ class Update extends Component {
                                        }}/>
                             </FormGroup>
                             <FormGroup>
-                                <Label>Current location</Label>
-                                <Input placeholder="Product location" value={this.state.latitude}
+                                <Label for="exampleDate">Date</Label>
+                                <Input type="date" name="date" id="exampleDate" placeholder="date placeholder" value={this.state.date}
                                        onChange={(e) => {
-                                           this.setState({description: e.target.value})
+                                           this.setState({date: e.target.value});
                                        }}/>
                             </FormGroup>
                             <Button disabled={this.state.updateButtonDisabled} color="primary"
-                                    >Créer une nouvelle version</Button>
+                                    onClick={this.handleUpdateProduct}
+                            >Update</Button>
                         </div>
                     }
                 />

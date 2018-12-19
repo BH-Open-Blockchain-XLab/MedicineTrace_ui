@@ -10,6 +10,7 @@ import {
     NavItem,
     NavLink,
     Container,
+    NavbarToggler,
 } from 'reactstrap';
 
 class App extends Component {
@@ -19,10 +20,17 @@ class App extends Component {
         this.state = {
             isOpen: false
         };
+        this.toggle = this.toggle.bind(this);
+    }
+
+    toggle() {
+        this.setState({
+            isOpen: !this.state.isOpen
+        });
     }
 
     render() {
-        const bodyColor = "hsl(136.7, 25%, 98.1%)";
+        const bodyColor = "hsl(136.7, 25%, 96.1%)";
 
         const appJSX = (
             <div style={{
@@ -37,6 +45,7 @@ class App extends Component {
                     <Container>
                         <Link to='/'><img alt="Logo Trace" style={{width: "150px", marginRight: "25px"}}
                                           src="/logo-black.svg"   /></Link>
+                        <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
