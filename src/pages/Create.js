@@ -3,9 +3,10 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 import {Button, FormGroup, Label, Input} from 'reactstrap';
 import AnnotatedSection from '../components/AnnotatedSection'
-import PlacesAutocomplete,{ geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import faStar from '@fortawesome/fontawesome-free-solid/faStar'
+
+
 
 /*
   "Create" component
@@ -20,31 +21,34 @@ class Create extends Component {
         this.state = {
             name: '',
             description: '',
-            latitude: '',
-            longitude: '',
-            address: '',
-            availableCertifications: [],
-            selectedCertifications: {},
-            customDataInputs: {},
-            selectedCategories: {},
+            location: '',
+            dataSource: null,
             buttonDisabled: false,
-            //ebayCategoryMap: ebayCategoryMap
         };
-        this.onChange = (address) => this.setState({address})
+    }
+
+    fetchProduct() {
+        fetch('/data.json')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    dataSource: responseJson,
+                })
+            })
+            .catch((error) => {
+                console.error(error);
+            })
     }
 
 
     handleCreateNewProduct = () => {
+        this.fetchProduct();
+        this.props.ourBurrowChain.setNewValue("0x921749847498328473298477428921",this.state.dataSource);
         this.props.history.replace('/');
     };
 
 
     render() {
-        const inputProps = {
-            value: this.state.address,
-            onChange: this.onChange,
-            placeholder: "Location (exact address, latitude & longitude, business)"
-        };
 
         return (
             <div>
@@ -72,9 +76,9 @@ class Create extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <Label>Current location</Label>
-                                <Input placeholder="Product location" value={this.state.latitude}
+                                <Input placeholder="Product location" value={this.state.location}
                                        onChange={(e) => {
-                                           this.setState({description: e.target.value})
+                                           this.setState({location: e.target.value})
                                        }}/>
                             </FormGroup>
 
@@ -88,12 +92,11 @@ class Create extends Component {
     }
 }
 
-// function mapStateToProps(state) {
-//     return {
-//         passageInstance: state.reducer.passageInstance,
-//         web3Accounts: state.reducer.web3Accounts
-//     };
-// }
+function mapStateToProps(state) {
+    return {
+        ourBurrowChain: state.reducer.ourBurrowChain,
+        productIdToView : state.reducer.productIdToView
+    };
+}
 
-//export default connect(mapStateToProps)(Create);
-export default Create;
+export default connect(mapStateToProps)(Create);

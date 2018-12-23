@@ -10,6 +10,8 @@ export default function reducer(state = initialState, action) {
             return {...state, searchHistory: []};
         case 'SETFACTORYINFO':
             return {...state, accountInformation: action.factoryinfo};
+        case 'INITBURROW':
+            return {...state, ourBurrowChain: action.burrow};
         default:
             return state;
     }

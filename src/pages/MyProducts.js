@@ -10,6 +10,7 @@ import faWrench from "@fortawesome/fontawesome-free-solid/faWrench"
 
 import AnnotatedSection from '../components/AnnotatedSection'
 import Search from '../components/Search'
+import Burrow from '../burrow/getBurrow'
 
 import {
     Button,
@@ -27,7 +28,7 @@ class MyProducts extends Component {
             haveCompany: false,
             companyInfo: ""
         };
-
+        this.props.dispatch(MainAction.InitBurrow(new Burrow()));
         this.clearSearchHistory = this.clearSearchHistory.bind(this);
     }
 

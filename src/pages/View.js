@@ -31,6 +31,7 @@ class View extends Component {
         this.state = {
             haveRightId: false,
             dataSource: null,
+            testdata: null,
             ProductID: "",
             fProduction: "",
             fDrug: "",
@@ -43,6 +44,9 @@ class View extends Component {
     componentDidMount() {
         this.fetchProduct();
         this.props.dispatch(MainAction.PutInId(this.props.match.params.productId));
+        this.setState({
+           testdata : this.props.ourBurrowChain.getNewValue("0x921749847498328473298477428921")
+        });
     }
 
     fetchProduct() {
@@ -67,6 +71,8 @@ class View extends Component {
     render() {
         const customData = this.state.customDataJson ? JSON.parse(this.state.customDataJson) : {};
 
+
+        console.log(this.state.testdata);
         const factories = this.state.fPhaFactory.map((factory,index) => {
             return (
                 <AnnotatedSection key={index}
@@ -284,6 +290,7 @@ class View extends Component {
 
 function mapStateToProps(state) {
     return {
+        ourBurrowChain: state.reducer.ourBurrowChain,
         productIdToView : state.reducer.productIdToView
     };
 }
