@@ -18,9 +18,6 @@ import {
 
 import * as MainAction from "../reducers/mainActions";
 
-import Burrow from '../burrow/getBurrow';
-//const Burrow = require('../burrow/getBurrow');
-
 class MyProducts extends Component {
 
     constructor(props) {
