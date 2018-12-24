@@ -10,7 +10,6 @@ import faWrench from "@fortawesome/fontawesome-free-solid/faWrench"
 
 import AnnotatedSection from '../components/AnnotatedSection'
 import Search from '../components/Search'
-import Burrow from '../burrow/getBurrow'
 
 import {
     Button,
@@ -18,6 +17,8 @@ import {
 } from 'reactstrap';
 
 import * as MainAction from "../reducers/mainActions";
+
+let Burrow = require('../burrow/getBurrow');
 
 class MyProducts extends Component {
 
@@ -28,13 +29,18 @@ class MyProducts extends Component {
             haveCompany: false,
             companyInfo: ""
         };
-        this.props.dispatch(MainAction.InitBurrow(new Burrow()));
         this.clearSearchHistory = this.clearSearchHistory.bind(this);
     }
 
     componentDidMount() {
         this.fetchProduct();
         this.setSearchHistory();
+        this.deployBurrowChain();
+    }
+
+    deployBurrowChain() {
+        this.props.dispatch(MainAction.InitBurrow(new Burrow.burrow()));
+        this.props.ourBurrowChain.deploy();
     }
 
     fetchProduct() {
@@ -193,7 +199,8 @@ function mapStateToProps(state) {
     return {
         productIdToView: state.reducer.productIdToView,
         searchHistory: state.reducer.searchHistory,
-        accountInformation: state.reducer.accountInformation
+        accountInformation: state.reducer.accountInformation,
+        ourBurrowChain: state.reducer.ourBurrowChain
     };
 }
 
