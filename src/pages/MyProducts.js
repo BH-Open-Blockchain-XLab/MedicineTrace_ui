@@ -18,7 +18,8 @@ import {
 
 import * as MainAction from "../reducers/mainActions";
 
-let Burrow = require('../burrow/getBurrow');
+import Burrow from '../burrow/getBurrow';
+//const Burrow = require('../burrow/getBurrow');
 
 class MyProducts extends Component {
 
@@ -35,12 +36,6 @@ class MyProducts extends Component {
     componentDidMount() {
         this.fetchProduct();
         this.setSearchHistory();
-        this.deployBurrowChain();
-    }
-
-    deployBurrowChain() {
-        this.props.dispatch(MainAction.InitBurrow(new Burrow.burrow()));
-        this.props.ourBurrowChain.deploy();
     }
 
     fetchProduct() {

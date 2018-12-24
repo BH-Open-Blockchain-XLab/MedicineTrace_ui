@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router-dom'
 import Notifications from 'react-notify-toast'
-
+import {connect} from 'react-redux';
 
 import {
     Collapse,
@@ -12,6 +12,9 @@ import {
     Container,
     NavbarToggler,
 } from 'reactstrap';
+
+import * as MainAction from "./reducers/mainActions";
+import * as Burrow from "./burrow/getBurrow";
 
 class App extends Component {
     constructor(props) {
@@ -27,6 +30,12 @@ class App extends Component {
         this.setState({
             isOpen: !this.state.isOpen
         });
+    }
+
+    componentDidMount() {
+        console.log("hi");
+        this.props.dispatch(MainAction.InitBurrow(Burrow.deploy()));
+        console.log("hi2");
     }
 
     render() {
@@ -84,4 +93,10 @@ class App extends Component {
     }
 }
 
-export default withRouter(App);
+function mapStateToProps(state) {
+    return {
+        ourBurrowChain: state.reducer.ourBurrowChain
+    };
+}
+
+export default withRouter(connect(mapStateToProps)(App));
