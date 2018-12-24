@@ -43,7 +43,6 @@ class Create extends Component {
 
     handleCreateNewProduct = () => {
         this.fetchProduct();
-        this.props.ourBurrowChain.setNewValue("0x921749847498328473298477428921",this.state.dataSource);
         this.props.history.replace('/');
     };
 

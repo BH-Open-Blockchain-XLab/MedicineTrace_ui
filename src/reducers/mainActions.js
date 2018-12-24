@@ -24,10 +24,3 @@ export function SetFactoryInfo(info) {
         factoryinfo: info
     };
 }
-
-export function InitBurrow(burrow) {
-    return {
-        type: 'INITBURROW',
-        burrow: burrow
-    };
-}

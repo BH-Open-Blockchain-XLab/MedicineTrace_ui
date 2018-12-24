@@ -13,9 +13,6 @@ import {
     NavbarToggler,
 } from 'reactstrap';
 
-import * as MainAction from "./reducers/mainActions";
-import * as Burrow from "./burrow/getBurrow";
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -30,12 +27,6 @@ class App extends Component {
         this.setState({
             isOpen: !this.state.isOpen
         });
-    }
-
-    componentDidMount() {
-        console.log("hi");
-        this.props.dispatch(MainAction.InitBurrow(Burrow.deploy()));
-        console.log("hi2");
     }
 
     render() {
