@@ -1,5 +1,5 @@
 //const monax = require('@monax/burrow');
-//import monax from "@monax/burrow";
+import monax from "@monax/burrow";
 
 function fetchFile(file) {
     fetch(file)
@@ -16,7 +16,7 @@ export function deploy() {
     let account = 'D6FD8AFF9253E037312FF92E5CD983B29F7C7C16';
     let options = {objectReturn: true};
 
-    let burrowchain = "abcde";//monax.createInstance(burrowURL, account, options);
+    let burrowchain = monax.createInstance(burrowURL, account, options);
 
     // Get the contractABIJSON from somewhere such as solc
     const abiFile = '/Production.abi';
