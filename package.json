@@ -35,7 +35,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serverstart" : "exprot PORT=9876 HOST=192.168.1.251 && react-scripts start"
+    "serverstart" : "export PORT=9876 HOST=192.168.1.251 && react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"
