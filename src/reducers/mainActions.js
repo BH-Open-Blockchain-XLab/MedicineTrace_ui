@@ -5,6 +5,13 @@ export function PutInId(id) {
     };
 }
 
+export function PutInData(data) {
+    return {
+        type: "PUTINDATA",
+        productData: data
+    };
+}
+
 export function UpdateHistory(id) {
     return {
         type: 'UPDATEHISTORY',

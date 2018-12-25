@@ -37,8 +37,6 @@ class Update extends Component {
             updateButtonDisabled: (this.props.accountInformation === ''),
             date: Update.setDate()
         });
-
-
     }
 
     static setDate() {
@@ -52,7 +50,6 @@ class Update extends Component {
         if (strDate >= 0 && strDate <= 9) {
             strDate = "0" + strDate;
         }
-
         return date.getFullYear() + "-" + nowMonth + "-" + strDate;
     }
 

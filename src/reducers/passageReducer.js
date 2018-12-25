@@ -4,6 +4,8 @@ export default function reducer(state = initialState, action) {
     switch (action.type) {
         case 'PUTINID':
             return {...state, productIdToView : action.productId };
+        case 'PUTINDATA':
+            return {...state, productDataById : action.productData };
         case 'UPDATEHISTORY':
             return {...state, searchHistory: [...state.searchHistory, action.searchId]};
         case 'CLEARHISTORY':

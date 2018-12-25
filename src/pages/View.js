@@ -11,6 +11,8 @@ import faWrench from '@fortawesome/fontawesome-free-solid/faWrench'
 import AnnotatedSection from '../components/AnnotatedSection'
 import * as MainAction from '../reducers/mainActions'
 
+import chain_url from '../burrow/ChainServer'
+
 import {
     Button,
     Table,
@@ -29,7 +31,9 @@ class View extends Component {
 
         // product information definition921749847498328473298477428921//无故障发生，巡视员编号
         this.state = {
+            url: chain_url,
             haveRightId: false,
+            findId: true,
             dataSource: null,
             ProductID: "",
             fProduction: "",
@@ -43,21 +47,35 @@ class View extends Component {
     componentDidMount() {
         this.fetchProduct();
         this.props.dispatch(MainAction.PutInId(this.props.match.params.productId));
+        if (this.state.haveRightId)
+            this.props.dispatch(MainAction.PutInData(this.state.dataSource));
     }
 
     fetchProduct() {
-        fetch('/data.json')
-            .then((response) => response.json())
+        fetch(this.state.url + '/' + this.props.match.params.productId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => response.json())
             .then((responseJson) => {
-                this.setState({
-                    haveRightId: true,
-                    dataSource: responseJson,
-                    ProductID: responseJson.ProductID,
-                    fProduction: responseJson.fProduction,
-                    fDrug: responseJson.fDrug,
-                    fPhaFactory: responseJson.fPhaFactory,
-                    fInspection: responseJson.fInspection
-                })
+                //console.log(responseJson.raw[0]);
+                if (responseJson.raw[0] !== "") {
+                    let data = JSON.parse(responseJson.raw[0]);
+                    this.setState({
+                        haveRightId: true,
+                        dataSource: data,
+                        ProductID: data.ProductID,
+                        fProduction: data.fProduction,
+                        fDrug: data.fDrug,
+                        fPhaFactory: data.fPhaFactory,
+                        fInspection: data.fInspection
+                    });
+                } else {
+                    this.setState({
+                        findId: false
+                    })
+                }
             })
             .catch((error) => {
                 console.error(error);
@@ -67,38 +85,38 @@ class View extends Component {
     render() {
         const customData = this.state.customDataJson ? JSON.parse(this.state.customDataJson) : {};
 
-        const factories = this.state.fPhaFactory.map((factory,index) => {
+        const factories = this.state.fPhaFactory.map((factory, index) => {
             return (
                 <AnnotatedSection key={index}
-                    annotationContent={
-                        <div>
-                            <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
-                                             icon={faInfoCircle}/>
-                            {factory.state}
-                        </div>
-                    }
-                    panelContent={
-                        <Table>
-                            <tbody>
-                            <tr>
-                                <th scope="row">Name</th>
-                                <td><Link to="/">{factory.Name}</Link></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">ProLicense</th>
-                                <td>{factory.ProLicense}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">ProApprovalNum</th>
-                                <td>{factory.ProApprovalNum}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Detail</th>
-                                <td>{factory.Detail}</td>
-                            </tr>
-                            </tbody>
-                        </Table>
-                    }
+                                  annotationContent={
+                                      <div>
+                                          <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
+                                                           icon={faInfoCircle}/>
+                                          {factory.state}
+                                      </div>
+                                  }
+                                  panelContent={
+                                      <Table>
+                                          <tbody>
+                                          <tr>
+                                              <th scope="row">Name</th>
+                                              <td><Link to="/">{factory.Name}</Link></td>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">ProLicense</th>
+                                              <td>{factory.ProLicense}</td>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">ProApprovalNum</th>
+                                              <td>{factory.ProApprovalNum}</td>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">Detail</th>
+                                              <td>{factory.Detail}</td>
+                                          </tr>
+                                          </tbody>
+                                      </Table>
+                                  }
                 />
             )
         });
@@ -116,7 +134,7 @@ class View extends Component {
                     }
                     panelContent={
                         <Row style={{marginLeft: "10px"}}>
-                            {this.state.ProductID==="" ? <div /> :
+                            {this.state.ProductID === "" ? <div/> :
                                 <QRCode style={{marginRight: "50px"}} value={this.state.ProductID}/>}
                             <div>
                                 Unique product identifier
@@ -231,10 +249,10 @@ class View extends Component {
                         </Table>
                     }
                 />
-                {factories && factories.length>0 ?
+                {factories && factories.length > 0 ?
                     <div>
                         {factories}
-                    </div>:
+                    </div> :
                     {}
                 }
 
@@ -248,7 +266,7 @@ class View extends Component {
                     }
                     panelContent={
                         <div>
-                            <Link style={{marginLeft: "10px"}} to={"/products/"+ this.state.ProductID +"/update"}>
+                            <Link style={{marginLeft: "10px"}} to={"/products/" + this.state.ProductID + "/update"}>
                                 <Button color="success">
                                     Update product
                                 </Button>
@@ -269,10 +287,16 @@ class View extends Component {
                 textAlign: "center",
                 padding: "1em"
             }}>
-                Loading...
+                {
+                    this.state.findId ? "Loading..." :
+                        <div>
+                            Invalid Product Id. Please back to {" "}
+                            <Link to="/">the main page.</Link>
+                        </div>
+                }
+
             </div>
         );
-
         return (
             <div>
                 {this.state.haveRightId ? viewPage : waiting}
@@ -285,7 +309,7 @@ class View extends Component {
 function mapStateToProps(state) {
     return {
         ourBurrowChain: state.reducer.ourBurrowChain,
-        productIdToView : state.reducer.productIdToView
+        productIdToView: state.reducer.productIdToView
     };
 }
 

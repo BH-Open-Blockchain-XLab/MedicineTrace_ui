@@ -6,7 +6,7 @@ import AnnotatedSection from '../components/AnnotatedSection'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import faStar from '@fortawesome/fontawesome-free-solid/faStar'
 
-
+import chain_url from '../burrow/ChainServer'
 
 /*
   "Create" component
@@ -19,25 +19,49 @@ class Create extends Component {
 
         // initialize the component's state
         this.state = {
+            url: chain_url,
             name: '',
             description: '',
             location: '',
             dataSource: null,
+            ProductID: '',
             buttonDisabled: false,
         };
     }
 
-    fetchProduct() {
+    componentDidMount() {
         fetch('/data.json')
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
+                    haveRightId: true,
                     dataSource: responseJson,
+                    ProductID: responseJson.ProductID
                 })
             })
             .catch((error) => {
                 console.error(error);
             })
+    }
+
+    fetchProduct() {
+        console.log(this.state.dataSource);
+
+        let data = {id: this.state.dataSource.ProductID, data: JSON.stringify(this.state.dataSource)};
+        let postdata = {value: JSON.stringify(data)};
+
+        fetch(this.state.url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postdata)
+        }).then(
+            (response) => {
+                console.log(response.json());
+            }
+        ).catch((err) => console.log("Fetch error: " + err));
+
     }
 
 
@@ -94,7 +118,7 @@ class Create extends Component {
 function mapStateToProps(state) {
     return {
         ourBurrowChain: state.reducer.ourBurrowChain,
-        productIdToView : state.reducer.productIdToView
+        productIdToView: state.reducer.productIdToView
     };
 }
 

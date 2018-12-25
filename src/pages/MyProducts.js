@@ -191,8 +191,7 @@ function mapStateToProps(state) {
     return {
         productIdToView: state.reducer.productIdToView,
         searchHistory: state.reducer.searchHistory,
-        accountInformation: state.reducer.accountInformation,
-        ourBurrowChain: state.reducer.ourBurrowChain
+        accountInformation: state.reducer.accountInformation
     };
 }
 
