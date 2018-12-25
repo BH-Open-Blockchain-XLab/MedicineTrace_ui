@@ -308,7 +308,7 @@ class View extends Component {
 
 function mapStateToProps(state) {
     return {
-        ourBurrowChain: state.reducer.ourBurrowChain,
+        productDataById: state.reducer.productDataById,
         productIdToView: state.reducer.productIdToView
     };
 }
