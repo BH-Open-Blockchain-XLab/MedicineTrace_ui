@@ -29,7 +29,6 @@ class View extends Component {
     constructor(props) {
         super(props);
 
-        // product information definition921749847498328473298477428921//无故障发生，巡视员编号
         this.state = {
             url: chain_url,
             haveRightId: false,
@@ -62,6 +61,7 @@ class View extends Component {
                 //console.log(responseJson.raw[0]);
                 if (responseJson.raw[0] !== "") {
                     let data = JSON.parse(responseJson.raw[0]);
+                    console.log(data);
                     this.setState({
                         haveRightId: true,
                         dataSource: data,

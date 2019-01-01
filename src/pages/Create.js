@@ -59,7 +59,22 @@ const exampleStruct = {
         "InspectionResult": "合格100%",
         "InspectionDetail": "药品质量严打周"
     },
-    "fPhaFactory": []
+    "fPhaFactory": [
+        {
+            "state": "生产公司",
+            "Name": "山东鲁能第一制药有限公司",
+            "ProLicense": "450102200023278",
+            "ProApprovalNum": "48893989128",
+            "Detail": "山东省济南市历下区经十路27号,建成于2010年",
+            "fEnDepotMsg": {
+                "InChargeID": "E56",
+                "Batch": "20181210E573",
+                "Time": "2019-02-28-10-33-12",
+                "FromLink": "0",
+                "Detail": "非处方药,999牌感冒灵,本批次共装箱80,总3200盒"
+            }
+        }
+    ]
 };
 
 class Create extends Component {
