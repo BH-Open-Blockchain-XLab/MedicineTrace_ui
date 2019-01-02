@@ -6,74 +6,117 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import faUser from '@fortawesome/fontawesome-free-solid/faUser'
 import faCertificate from '@fortawesome/fontawesome-free-solid/faCertificate'
 
+import {Link} from "react-router-dom";
+
+import {Button, FormGroup, Input, Label, Table} from "reactstrap";
+
 class Account extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            isGod: false,
-            availableCertifications: ''
+            companyInfo: '',
+            companyState: '',
+            name: '',
         };
+
+        this.handleUpdateProduct = this.handleUpdateProduct.bind(this);
     }
 
+    componentDidMount() {
+        this.params = this.props.match.params;
+        this.setState({
+            companyInfo: this.props.accountInformation,
+        });
+    }
+
+    handleUpdateProduct() {
+        console.log(this.state.companyState);
+        this.props.history.replace('/');
+    }
+
+
     render() {
+        const companyTable = (
+            <div>
+                <Table>
+                    <tbody>
+                    <tr>
+                        <th scope="row">Type</th>
+                        <td>{this.state.companyInfo.TYPE}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>{this.state.companyInfo.Name}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">LicenseNum</th>
+                        <td>{this.state.companyInfo.ProLicense}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ApprovalNum</th>
+                        <td>{this.state.companyInfo.ProApprovalNum}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Detail</th>
+                        <td>{this.state.companyInfo.Detail}</td>
+                    </tr>
+                    </tbody>
+                </Table>
+            </div>
+        );
+
         return (
             <div>
                 <AnnotatedSection
                     annotationContent={
                         <div>
                             <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}} icon={faUser}/>
-                            Account information
+                            Company information
                         </div>
                     }
                     panelContent={
-                        <div>
-                            <div>Ethereum address : 0x627306090abab3a6e1400e9345bc60c78a8bef57</div>
-                            <div>Ether balance : 100 </div>
-                        </div>
+                        this.state.companyInfo ? companyTable :
+                            <div>
+                                Fail to load your info. Please set your info below, or back to {" "}
+                                <Link to={"/"}>the main page</Link>
+                                .
+                            </div>
                     }
                 />
+
                 <AnnotatedSection
                     annotationContent={
                         <div>
                             <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
                                              icon={faCertificate}/>
-                            Certifications
+                            Change company
                         </div>
                     }
                     panelContent={
                         <div>
-                            <table className="table table-sm mb-0 noHeaderLine">
-                                <tbody>
-                                {
-                                    // displays all available certifications
-                                    this.state.availableCertifications && this.state.availableCertifications.length > 0 ?
-                                        this.state.availableCertifications.map((certification, index) =>
-                                            <tr key={index}>
-                                                <td style={{width: '45px'}}>
-                                                    {
-                                                        certification.imageUrl && certification.imageUrl.length > 0 ?
-                                                            <img src={certification.imageUrl} alt={certification.name}
-                                                                 style={{maxWidth: '27px', maxHeight: '27px'}}/>
-                                                            :
-                                                            <div style={{
-                                                                width: '27px',
-                                                                height: '27px',
-                                                                background: '#c4c4c4'
-                                                            }}>&nbsp;</div>
-                                                    }
-                                                </td>
-                                                <td>{certification.name}</td>
-                                            </tr>
-                                        )
-                                        :
-                                        <tr>
-                                            <td>No certifications created yet.</td>
-                                        </tr>
-                                }
-                                </tbody>
-                            </table>
+                            <FormGroup>
+                                <Label>Company Type</Label>
+                                <Input type="select" name="select" id="exampleSelect" onChange={(e) => {
+                                    this.setState({companyState: e.target.value})
+                                }}>
+                                    <option value="">Select</option>
+                                    <option value="生产公司">生产公司</option>
+                                    <option value="中转公司">中转公司</option>
+                                    <option value="销售公司">销售公司</option>
+                                </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Name</Label>
+                                <Input placeholder="Product name" value={this.state.name} onChange={(e) => {
+                                    this.setState({name: e.target.value})
+                                }}/>
+                            </FormGroup>
+
+                            <Button disabled={this.state.updateButtonDisabled} color="primary"
+                                    onClick={this.handleUpdateProduct}
+                            >Change</Button>
                         </div>
                     }
                 />
@@ -82,14 +125,12 @@ class Account extends Component {
     }
 }
 
-// function mapStateToProps(state) {
-//     return {
-//         web3: state.reducer.web3,
-//         passageInstance: state.reducer.passageInstance,
-//         web3Accounts: state.reducer.web3Accounts,
-//         userAddress: state.reducer.userAddress
-//     };
-// }
+function mapStateToProps(state) {
+    return {
+        productIdToView: state.reducer.productIdToView,
+        accountInformation: state.reducer.accountInformation
+    };
+}
 
-export default Account;
+export default connect(mapStateToProps)(Account);
 

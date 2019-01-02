@@ -92,7 +92,7 @@ class View extends Component {
                                       <div>
                                           <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
                                                            icon={faInfoCircle}/>
-                                          {factory.state}
+                                          {factory.TYPE}
                                       </div>
                                   }
                                   panelContent={

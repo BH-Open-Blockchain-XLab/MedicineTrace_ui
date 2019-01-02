@@ -86,6 +86,10 @@ class MyProducts extends Component {
                 <Table>
                     <tbody>
                     <tr>
+                        <td>Type</td>
+                        <td>{this.state.companyInfo.TYPE}</td>
+                    </tr>
+                    <tr>
                         <td>Name</td>
                         <td>{this.state.companyInfo.Name}</td>
                     </tr>
@@ -134,7 +138,9 @@ class MyProducts extends Component {
                     panelContent={
                         this.state.companyInfo ? companyTable :
                             <div>
-                                Fail to load your info.
+                                Fail to load your info. You can go to {" "}
+                                <Link to={"/account"}>here</Link>
+                                {" "} to set.
                             </div>
                     }
                 />
@@ -153,7 +159,7 @@ class MyProducts extends Component {
                                 <div>
                                     {histories}
                                     <hr/>
-                                    <Button color="link" size="sm" style={{color: "hsl(161, 42%, 42%)"}}onClick={this.clearSearchHistory}><b>Clear History</b></Button>
+                                    <Button color="link" size="sm" style={{color: "hsl(161, 42%, 42%)"}} onClick={this.clearSearchHistory}><b>Clear History</b></Button>
                                 </div>
                                 :
                                 <div>
