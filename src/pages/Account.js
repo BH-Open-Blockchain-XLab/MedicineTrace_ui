@@ -9,6 +9,8 @@ import faCertificate from '@fortawesome/fontawesome-free-solid/faCertificate'
 import {Link} from "react-router-dom";
 
 import {Button, FormGroup, Input, Label, Table} from "reactstrap";
+import * as MainAction from "../reducers/mainActions";
+import faWrench from "@fortawesome/fontawesome-free-solid/faWrench";
 
 class Account extends Component {
 
@@ -19,6 +21,9 @@ class Account extends Component {
             companyInfo: '',
             companyState: '',
             name: '',
+            proLicense: '',
+            proApprovalNum: '',
+            detail: ''
         };
 
         this.handleUpdateProduct = this.handleUpdateProduct.bind(this);
@@ -32,10 +37,38 @@ class Account extends Component {
     }
 
     handleUpdateProduct() {
-        console.log(this.state.companyState);
+        let companyInfo = {
+            TYPE: this.state.companyState,
+            Name: this.state.name,
+            ProLicense: this.state.proLicense,
+            ProApprovalNum: this.state.proApprovalNum,
+            Detail: this.state.detail
+        };
+
+        this.props.dispatch(MainAction.SetFactoryInfo(companyInfo));
+
         this.props.history.replace('/');
     }
 
+    setExampleProduct1 = () => {
+        this.setState({
+            companyState: "生产公司",
+            name: "山东鲁能第一制药有限公司",
+            proLicense: "450102200023278",
+            proApprovalNum: "48893989128",
+            detail: "山东省济南市历下区经十路27号,建成于2010年"
+        });
+    };
+
+    setExampleProduct2 = () => {
+        this.setState({
+            companyState: "销售公司",
+            name: "山东鲁能同仁堂大药房",
+            proLicense: "790102223459178",
+            proApprovalNum: "12957834128",
+            detail: "山东省济南市历下区经十路29号,建成于2010年"
+        });
+    };
 
     render() {
         const companyTable = (
@@ -98,7 +131,7 @@ class Account extends Component {
                         <div>
                             <FormGroup>
                                 <Label>Company Type</Label>
-                                <Input type="select" name="select" id="exampleSelect" onChange={(e) => {
+                                <Input type="select" name="select" id="exampleSelect" value={this.state.companyState} onChange={(e) => {
                                     this.setState({companyState: e.target.value})
                                 }}>
                                     <option value="">Select</option>
@@ -109,14 +142,54 @@ class Account extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <Label>Name</Label>
-                                <Input placeholder="Product name" value={this.state.name} onChange={(e) => {
+                                <Input placeholder="Company name" value={this.state.name} onChange={(e) => {
                                     this.setState({name: e.target.value})
                                 }}/>
                             </FormGroup>
+                            <FormGroup>
+                                <Label>ProLicense</Label>
+                                <Input placeholder="Company proLicense" value={this.state.proLicense} onChange={(e) => {
+                                    this.setState({proLicense: e.target.value})
+                                }}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>ProApprovalNum</Label>
+                                <Input placeholder="Company proApprovalNum" value={this.state.proApprovalNum}
+                                       onChange={(e) => {
+                                           this.setState({proApprovalNum: e.target.value})
+                                       }}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Detail</Label>
+                                <Input placeholder="Company Detail" value={this.state.detail} onChange={(e) => {
+                                    this.setState({detail: e.target.value})
+                                }}/>
+                            </FormGroup>
+                        </div>
+                    }
+                />
 
+                <AnnotatedSection
+                    annotationContent={
+                        <div>
+                            <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
+                                             icon={faWrench}/>
+                            Actions
+                        </div>
+                    }
+                    panelContent={
+                        <div>
                             <Button disabled={this.state.updateButtonDisabled} color="primary"
                                     onClick={this.handleUpdateProduct}
-                            >Change</Button>
+                            >Change Information</Button>
+
+                            <Button color="warning" style={{marginLeft: "10px"}} onClick={this.setExampleProduct1}>
+                                Set an example
+                            </Button>
+
+                            <Button color="warning" style={{marginLeft: "10px"}} onClick={this.setExampleProduct2}>
+                                Set another example
+                            </Button>
                         </div>
                     }
                 />

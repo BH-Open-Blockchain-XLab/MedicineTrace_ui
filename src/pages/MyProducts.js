@@ -31,7 +31,12 @@ class MyProducts extends Component {
     }
 
     componentDidMount() {
-        this.fetchProduct();
+        if (this.props.accountInformation !=="") {
+            this.setState({
+                haveCompany: true,
+                companyInfo: this.props.accountInformation
+            });
+        }
         this.setSearchHistory();
     }
 

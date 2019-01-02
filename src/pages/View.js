@@ -83,8 +83,6 @@ class View extends Component {
     }
 
     render() {
-        const customData = this.state.customDataJson ? JSON.parse(this.state.customDataJson) : {};
-
         const factories = this.state.fPhaFactory.map((factory, index) => {
             return (
                 <AnnotatedSection key={index}
@@ -115,6 +113,53 @@ class View extends Component {
                                               <td>{factory.Detail}</td>
                                           </tr>
                                           </tbody>
+                                          {factory.TYPE === '生产公司' ? true : <tbody>
+                                          <tr>
+                                              <th scope="row">Enter Info</th>
+                                              <td/>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">InChargeID</th>
+                                              <td>{factory.fEnDepotMsg.InChargeID}</td>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">Batch</th>
+                                              <td>{factory.fEnDepotMsg.Batch}</td>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">Time</th>
+                                              <td>{factory.fEnDepotMsg.Time}</td>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">Detail</th>
+                                              <td>{factory.fEnDepotMsg.Detail}</td>
+                                          </tr>
+                                          </tbody>}
+
+                                          {factory.fExDepotMsg.InChargeID === "" ? true : <tbody>
+                                          <tr>
+                                              <th scope="row">Out Info</th>
+                                              <td/>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">InChargeID</th>
+                                              <td>{factory.fExDepotMsg.InChargeID}</td>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">Batch</th>
+                                              <td>{factory.fExDepotMsg.Batch}</td>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">Time</th>
+                                              <td>{factory.fExDepotMsg.Time}</td>
+                                          </tr>
+                                          <tr>
+                                              <th scope="row">Detail</th>
+                                              <td>{factory.fExDepotMsg.Detail}</td>
+                                          </tr>
+                                          </tbody>}
+
+
                                       </Table>
                                   }
                 />
@@ -237,14 +282,6 @@ class View extends Component {
                                 <th scope="row">InspectionDetail</th>
                                 <td>{this.state.fInspection.InspectionDetail}</td>
                             </tr>
-                            {
-                                Object.keys(customData).map(key =>
-                                    <tr key={key}>
-                                        <th scope="row">{key}</th>
-                                        <td>{customData[key]}</td>
-                                    </tr>
-                                )
-                            }
                             </tbody>
                         </Table>
                     }

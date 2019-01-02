@@ -46,10 +46,10 @@ const sourceStruct = {
             "ProApprovalNum": "",
             "Detail": "",
             "fEnDepotMsg": {
-                "InChargeID": "",
-                "Batch": "",
-                "Time": "",
-                "Detail": ""
+                "InChargeID": "1",
+                "Batch": "1",
+                "Time": "1",
+                "Detail": "1"
             },
             "fExDepotMsg": {
                 "InChargeID": "",
@@ -144,7 +144,6 @@ class Create extends Component {
                 //console.log(response.json());
             }
         ).catch((err) => console.log("Fetch error: " + err));
-
     }
 
     handleCreateNewProduct = () => {

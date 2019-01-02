@@ -6,6 +6,7 @@ import AnnotatedSection from '../components/AnnotatedSection'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import faArrowAltCircleUp from '@fortawesome/fontawesome-free-solid/faArrowAltCircleUp'
 import faList from "@fortawesome/fontawesome-free-solid/faList";
+import faWrench from "@fortawesome/fontawesome-free-solid/faWrench";
 
 import {
     Button,
@@ -14,32 +15,38 @@ import {
     Input,
     Table,
 } from 'reactstrap';
+import chain_url from "../burrow/ChainServer";
+
 
 class Update extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            url: chain_url,
             updateButtonDisabled: true,
             companyInfo: '',
+
+            companyState: 'in',
             changeID: '',
             batch: '',
             date: new Date().toLocaleDateString(),
             description: '',
 
             haveRightId: false,
-            findId: true,
+            checkUpdate: true,
             dataSource: null,
-            fPhaFactory: []
+            WrongInfo: ''
         };
     }
 
     componentDidMount() {
         this.params = this.props.match.params;
-        this.fetchProduct();
         this.setState({
             companyInfo: this.props.accountInformation,
             updateButtonDisabled: (this.props.accountInformation === ''),
             date: Update.setDate(),
+        }, () => {
+            this.fetchProduct();
         });
     }
 
@@ -51,19 +58,18 @@ class Update extends Component {
             }
         }).then((response) => response.json())
             .then((responseJson) => {
-                //console.log(responseJson.raw[0]);
                 if (responseJson.raw[0] !== "") {
                     let data = JSON.parse(responseJson.raw[0]);
                     console.log(data);
                     this.setState({
                         haveRightId: true,
                         dataSource: data,
-                        fPhaFactory: data.fPhaFactory
                     });
                 } else {
                     this.setState({
-                        findId: false
-                    })
+                        updateButtonDisabled: true
+                    });
+                    console.log("Wrong Product ID");
                 }
             })
             .catch((error) => {
@@ -85,11 +91,105 @@ class Update extends Component {
         return date.getFullYear() + "-" + nowMonth + "-" + strDate;
     }
 
+    setExampleProduct = () => {
+        if (this.state.companyState === 'in') {
+            this.setState({
+                changeID: "E56",
+                batch: "20181210E573",
+                date: "2019-02-28",
+                description: "非处方药,999牌感冒灵,本批次共装箱80,总3200盒"
+            });
+        }
+
+        if (this.state.companyState === 'out') {
+            this.setState({
+                changeID: "E02",
+                batch: "20190124S820",
+                date: "2019-03-28",
+                description: "非处方药,999牌感冒灵,本批次共装箱54,总2120盒"
+            });
+        }
+    };
+
+    postProduct(sourcedata) {
+        let data = {id: JSON.parse(sourcedata).ProductID, data: sourcedata};
+        let postdata = {value: JSON.stringify(data)};
+
+        fetch(this.state.url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postdata)
+        }).then(
+            () => {
+                this.setState({
+                    checkUpdate: false,
+                    WrongInfo: "Waiting..."
+                }, () => {
+                    let time = (new Date()).getTime();  //获取当前的unix时间戳
+                    while ((new Date()).getTime() - time < 2000) {
+                    }
+                    this.props.history.replace('/products/' + this.params.productId);
+                });
+            }
+        ).catch((err) => console.log("Fetch error: " + err));
+    }
+
     handleUpdateProduct = () => {
+        let length = this.state.dataSource.fPhaFactory.length;
 
+        if (this.state.companyState === 'in') {
+            if (this.state.dataSource.fPhaFactory[length - 1].fExDepotMsg.Batch === '') {
+                this.setState({
+                    checkUpdate: false,
+                    WrongInfo: "This drug needs to out of the library."
+                });
+                return;
+            }
+            let data = this.state.dataSource;
+            let updata = {
+                TYPE: this.state.companyInfo.TYPE,
+                Name: this.state.companyInfo.Name,
+                ProLicense: this.state.companyInfo.ProLicense,
+                ProApprovalNum: this.state.companyInfo.ProApprovalNum,
+                Detail: this.state.companyInfo.Detail,
+                fEnDepotMsg: {
+                    "InChargeID": this.state.changeID,
+                    "Batch": this.state.batch,
+                    "Time": this.state.date,
+                    "Detail": this.state.description
+                },
+                fExDepotMsg: {
+                    "InChargeID": "",
+                    "Batch": "",
+                    "Time": "",
+                    "Detail": ""
+                }
+            };
 
+            data.fPhaFactory.push(updata);
+            console.log(data);
+            this.postProduct(JSON.stringify(data));
+        }
 
-        this.props.history.replace('/products/' + this.params.productId);
+        if (this.state.companyState === 'out') {
+            console.log(this.state.dataSource.fPhaFactory[length - 1].ProLicense);
+            if (this.state.dataSource.fPhaFactory[length - 1].ProLicense !== this.state.companyInfo.ProLicense || this.state.dataSource.fPhaFactory[length - 1].fExDepotMsg.Batch !== '') {
+                this.setState({
+                    checkUpdate: false,
+                    WrongInfo: "This drug is not in your library."
+                });
+                return;
+            }
+            let data = this.state.dataSource;
+            data.fPhaFactory[length - 1].fExDepotMsg.Batch = this.state.batch;
+            data.fPhaFactory[length - 1].fExDepotMsg.InChargeID = this.state.changeID;
+            data.fPhaFactory[length - 1].fExDepotMsg.Time = this.state.date;
+            data.fPhaFactory[length - 1].fExDepotMsg.Detail = this.state.description;
+
+            this.postProduct(JSON.stringify(data));
+        }
     };
 
 
@@ -98,26 +198,26 @@ class Update extends Component {
             <div>
                 <Table>
                     <tbody>
-                        <tr>
-                            <th scope="row">Type</th>
-                            <td>{this.state.companyInfo.TYPE}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Name</th>
-                            <td>{this.state.companyInfo.Name}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">LicenseNum</th>
-                            <td>{this.state.companyInfo.ProLicense}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">ApprovalNum</th>
-                            <td>{this.state.companyInfo.ProApprovalNum}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Detail</th>
-                            <td>{this.state.companyInfo.Detail}</td>
-                        </tr>
+                    <tr>
+                        <th scope="row">Type</th>
+                        <td>{this.state.companyInfo.TYPE}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>{this.state.companyInfo.Name}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">LicenseNum</th>
+                        <td>{this.state.companyInfo.ProLicense}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ApprovalNum</th>
+                        <td>{this.state.companyInfo.ProApprovalNum}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Detail</th>
+                        <td>{this.state.companyInfo.Detail}</td>
+                    </tr>
                     </tbody>
                 </Table>
             </div>
@@ -140,7 +240,8 @@ class Update extends Component {
                 </FormGroup>
                 <FormGroup>
                     <Label>Date</Label>
-                    <Input type="date" name="date" id="exampleDate" placeholder="date placeholder" value={this.state.date}
+                    <Input type="date" name="date" id="exampleDate" placeholder="date placeholder"
+                           value={this.state.date}
                            onChange={(e) => {
                                this.setState({date: e.target.value});
                            }}/>
@@ -194,9 +295,27 @@ class Update extends Component {
                                 </Input>
                             </FormGroup>
                             {EnterInfoSet}
+                        </div>
+                    }
+                />
+                <AnnotatedSection
+                    annotationContent={
+                        <div>
+                            <FontAwesomeIcon fixedWidth style={{paddingTop: "3px", marginRight: "6px"}}
+                                             icon={faWrench}/>
+                            Actions
+                        </div>
+                    }
+                    panelContent={
+                        <div>
+                            {this.state.checkUpdate ? true : <div>{this.state.WrongInfo}</div>}
                             <Button disabled={this.state.updateButtonDisabled} color="primary"
                                     onClick={this.handleUpdateProduct}
-                            >Update</Button>
+                            >Update product</Button>
+
+                            <Button color="warning" style={{marginLeft: "10px"}} onClick={this.setExampleProduct}>
+                                Set an example
+                            </Button>
                         </div>
                     }
                 />
