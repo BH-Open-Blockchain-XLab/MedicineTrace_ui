@@ -40,21 +40,6 @@ class MyProducts extends Component {
         this.setSearchHistory();
     }
 
-    fetchProduct() {
-        fetch('/company.json')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({
-                    haveCompany: true,
-                    companyInfo: responseJson
-                });
-                this.updateCompanyInfo();
-            })
-            .catch((error) => {
-                console.error(error);
-            })
-    }
-
     clearSearchHistory() {
         this.props.dispatch(MainAction.ClearHistory());
         this.setState({histories: []});
@@ -186,7 +171,7 @@ class MyProducts extends Component {
                     panelContent={
                         <div>
                             <Link to={"/create"}>
-                                <Button color="primary" title="">
+                                <Button disabled={this.state.companyInfo.TYPE !== "生产公司"} color="primary" title="">
                                     Create a product
                                 </Button>
                             </Link>

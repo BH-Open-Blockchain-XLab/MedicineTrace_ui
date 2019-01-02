@@ -12,6 +12,8 @@ import faUser from "@fortawesome/fontawesome-free-solid/faUser";
 
 import md5 from 'js-md5';
 
+import * as MainAction from "../reducers/mainActions";
+
 /*
   "Create" component
   @description Page component that allows creating a new product
@@ -127,6 +129,11 @@ class Create extends Component {
         this.setState({
             companyInfo: this.props.accountInformation,
         });
+        if (this.props.accountInformation === '') {
+            this.setState({
+                createButtonDisabled: true
+            });
+        }
     }
 
     postProduct() {
@@ -164,6 +171,7 @@ class Create extends Component {
         data.ProductID = '0x' + md5(JSON.stringify(data));
 
         console.log("ID: ", data.ProductID);
+        this.props.dispatch(MainAction.UpdateHistory(data.ProductID));
 
         this.setState({
             ProductID: data.ProductID,
@@ -433,6 +441,7 @@ class Create extends Component {
                     }
                     panelContent={
                         <div>
+                            {this.state.createButtonDisabled ? <div>You need to set your account info.</div> : true}
                             <Button disabled={this.state.createButtonDisabled} color="primary"
                                     onClick={this.handleCreateNewProduct}>Create product</Button>
 
