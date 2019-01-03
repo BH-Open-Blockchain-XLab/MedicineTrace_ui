@@ -15,9 +15,9 @@ ReactDOM.render(
         <Routes/>
     </Provider>,
     document.getElementById('root'),
-    /*window.onbeforeunload = function() {
+    window.onbeforeunload = function() {
         return '确定离开此页吗？';
-    }*/
+    }
 );
 
 // If you want your app to work offline and load faster, you can change
