@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 
 ## Installation
-###Prerequisites
+### Prerequisites
 + [npm](https://www.npmjs.com/get-npm) version 6.5 or higher
 
 You can check the installed version of npm with the command:
@@ -15,14 +15,14 @@ You can check the installed version of npm with the command:
 npm -v
 ```
 
-###Clone && Install 
+### Clone && Install 
 ```
 git clone https://github.com/BH-Open-Blockchain-XLab/MedicineTrace_ui.git
 cd MedicineTrace_ui
 npm install
 ```
 
-##Available Scripts
+## Available Scripts
 In the project directory, you can run:
 
 ### `npm start`
