@@ -10,7 +10,7 @@ import chain_url from '../burrow/ChainServer'
 import faWrench from "@fortawesome/fontawesome-free-solid/faWrench";
 import faUser from "@fortawesome/fontawesome-free-solid/faUser";
 
-import md5 from 'js-md5';
+import sha256 from 'js-sha256';
 
 import * as MainAction from "../reducers/mainActions";
 
@@ -168,7 +168,7 @@ class Create extends Component {
         data.fPhaFactory[0].ProApprovalNum = this.state.companyInfo.ProApprovalNum;
         data.fPhaFactory[0].Detail = this.state.companyInfo.Detail;
 
-        data.ProductID = '0x' + md5(JSON.stringify(data));
+        data.ProductID = '0x' + sha256(JSON.stringify(data)).substring(0,32);
 
         console.log("ID: ", data.ProductID);
         this.props.dispatch(MainAction.UpdateHistory(data.ProductID));
