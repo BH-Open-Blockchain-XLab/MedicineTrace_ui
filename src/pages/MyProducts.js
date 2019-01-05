@@ -56,10 +56,6 @@ class MyProducts extends Component {
             this.setState({histories: []});
     }
 
-    updateCompanyInfo() {
-        this.props.dispatch(MainAction.SetFactoryInfo(this.state.companyInfo));
-    }
-
     render() {
         const histories = this.state.histories.map((history, index) => {
             return (
